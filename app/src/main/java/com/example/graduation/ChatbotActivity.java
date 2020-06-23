@@ -200,18 +200,31 @@ public class ChatbotActivity extends AppCompatActivity {
 
             }
 
-            if(botReply.contains("맵")==true){
+            if(botReply.contains("E동")==true){
                 Intent intent3;
-                intent3 = new Intent(this, MapKpu.class);
+                intent3 = new Intent(this, MapKpu.class); //E동=Mapkpu임
                 startActivity(intent3);
             }
 
-
-            if(botReply.contains("사용법")==true){
+            if(botReply.contains("TIP")==true){
                 Intent intent4;
-                intent4 = new Intent(this, Maunal.class);
+                intent4 = new Intent(this, MapKpu2.class);
                 startActivity(intent4);
             }
+
+
+            if(botReply.contains("산융")==true){
+                Intent intent5;
+                intent5 = new Intent(this, MainKpu3.class);
+                startActivity(intent5);
+            }
+
+            if(botReply.contains("종합")==true){
+                Intent intent6;
+                intent6 = new Intent(this, MapJong.class);
+                startActivity(intent6);
+            }
+
 
 
         }

@@ -3,7 +3,7 @@
     package="com.example.graduation">
     <!-- 인터넷 권한 선언 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,13 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".Maunal"></activity>
+        <activity android:name=".MapJong"></activity>
+        <activity android:name=".MainKpu3" />
+        <activity android:name=".MapKpu2" />
+        <activity android:name=".Maunal" />
         <activity android:name=".MapKpu" />
         <activity android:name=".waiting_time" />
         <activity android:name=".Distribution" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

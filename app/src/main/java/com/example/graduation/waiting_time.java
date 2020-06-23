@@ -40,10 +40,10 @@ public class waiting_time extends AppCompatActivity {
 
                 for (DataSnapshot myData : dataSnapshot.getChildren()) { ////values에 데이터를 담는 과정
 
-                    String time1= dataSnapshot.child("Edong").child("wait_time").getValue(String.class);
-                    String time2= dataSnapshot.child("Kpu").child("wait_time").getValue(String.class);
-                    String time3= dataSnapshot.child("Olive").child("wait_time").getValue(String.class);
-                    String time4= dataSnapshot.child("Sanyung").child("wait_time").getValue(String.class);
+                    String time1= dataSnapshot.child("JongHap").child("Waiting_time").getValue(String.class);
+                    String time2= dataSnapshot.child("Olive").child("Waiting_time").getValue(String.class);
+                    String time3= dataSnapshot.child("Sanyung").child("Waiting_time").getValue(String.class);
+                    String time4= dataSnapshot.child("Tip").child("Waiting_time").getValue(String.class);
 
 
                     Log.e(time1,"error");

@@ -57,7 +57,7 @@ public class Distribution extends AppCompatActivity{
                 ArrayList<String> labels = new ArrayList<String>();
                 labels.add("TIP");
                 labels.add("TIP");
-                labels.add("E동");
+                labels.add("종합관");
                 labels.add("Olive");
                 labels.add("산융");
 
@@ -65,8 +65,8 @@ public class Distribution extends AppCompatActivity{
 
                     for (DataSnapshot myData : dataSnapshot.getChildren()) { ////values에 데이터를 담는 과정
                         //i = i + 1;
-                        Integer cnt= dataSnapshot.child("Kpu").child("people_number").getValue(Integer.class);
-                        Integer cnt2= dataSnapshot.child("Edong").child("people_number").getValue(Integer.class);
+                        Integer cnt= dataSnapshot.child("Tip").child("people_number").getValue(Integer.class);
+                        Integer cnt2= dataSnapshot.child("JongHap").child("people_number").getValue(Integer.class);
                         Integer cnt3= dataSnapshot.child("Olive").child("people_number").getValue(Integer.class);
                         Integer cnt4= dataSnapshot.child("Sanyung").child("people_number").getValue(Integer.class);
 
