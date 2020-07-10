@@ -1,18 +1,25 @@
 package com.example.graduation;
 
-import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
-import android.util.Log;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
 import android.widget.Toast;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
+
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,51 +27,40 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import com.github.mikephil.charting.data.LineData;
 
-public class Distribution extends AppCompatActivity{
+public class BarChartActivity extends AppCompatActivity {
+
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
     private ChildEventListener mChild;
+    BarChart chart;
 
-
-    LineChart lineChart; //Temp_linechart
-    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_distribution);
+        setContentView(R.layout.activity_bar_chart);
 
         initDatabase();
+        chart = findViewById(R.id.barchart);
 
-        lineChart=(LineChart)findViewById(R.id.mpChart);
-        //  tv=(TextView)findViewById(R.id.cntid);
 
         mDatabase=FirebaseDatabase.getInstance();
         mReference=mDatabase.getReference("Distribution_DB");
-
-        // mReference.child("Kpu").addValueEventListener(new ValueEventListener() {
         mReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Entry> dataVals  = new ArrayList<>(); //차트 데이터 셋에 담겨질 데이터
+                List<BarEntry> people_Data = new ArrayList();
 
-                ArrayList<String> labels = new ArrayList<String>();
-                labels.add("TIP");
+                ArrayList labels = new ArrayList();// 식당라벨
                 labels.add("TIP");
                 labels.add("종합관");
                 labels.add("Olive");
                 labels.add("산융");
 
-                //float i=0;
 
-                for (DataSnapshot myData : dataSnapshot.getChildren()) { ////values에 데이터를 담는 과정
-                    //i = i + 1;
+                for (DataSnapshot myData : dataSnapshot.getChildren()) {
+
                     Integer cnt= dataSnapshot.child("Tip").child("people_number").getValue(Integer.class);
                     Integer cnt2= dataSnapshot.child("JongHap").child("people_number").getValue(Integer.class);
                     Integer cnt3= dataSnapshot.child("Olive").child("people_number").getValue(Integer.class);
@@ -75,41 +71,44 @@ public class Distribution extends AppCompatActivity{
                     Float SensorValue3 = Float.valueOf(cnt3).floatValue();
                     Float SensorValue4 = Float.valueOf(cnt4).floatValue();
 
-                    dataVals.add(new Entry(1f,SensorValue));
-                    dataVals.add(new Entry(2f,SensorValue2));
-                    dataVals.add(new Entry(3f,SensorValue3));
-                    dataVals.add(new Entry(4f,SensorValue4));
+                    people_Data.add(new BarEntry(0.5f,SensorValue));
+                    people_Data.add(new BarEntry(1.5f,SensorValue2));
+                    people_Data.add(new BarEntry(2.5f,SensorValue3));
+                    people_Data.add(new BarEntry(3.5f,SensorValue4));
 
-                    // tv.setText("현재 인원:"+cnt);
                 }
 
-                Collections.sort(dataVals, new EntryXComparator());
-                final LineDataSet lineDataSet = new LineDataSet(dataVals, "인원 수");    //LineDataSet 선언
-
-                LineData data = new LineData(lineDataSet); //LineDataSet을 담는 그릇 여러개의 라인 데이터 삽입
-                lineDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                Collections.sort(people_Data, new EntryXComparator());
+                BarDataSet bardataset = new BarDataSet(people_Data, "인원 수");
+                BarData data = new BarData(bardataset); // MPAndroidChart v3.X 오류 발생
+                bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
                 //x축 string으로 변환
-                XAxis xAxis = lineChart.getXAxis();
-                xAxis.setValueFormatter(new MyXAxisValueFormatter(labels)); //MyXAxisValueFormatter 커스텀 디자인 클래스 호출
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setValueFormatter(new MyXAxisValueFormatter(labels)); //MyXAxisValueFormatter 커
+                xAxis.setGranularity(1f);
+                xAxis.setTextSize(13f);
+                xAxis.setCenterAxisLabels(true);
+                //xAxis.setLabelRotationAngle(-90);
 
-                //출력
-                lineChart.setData(data);
-                lineChart.animateY(5000);
-                lineChart.notifyDataSetChanged();
-                lineChart.invalidate();
+
+                data.setValueTextSize(15f);
+                data.setBarWidth(0.5f);
+
+                chart.animateY(5000);
+                chart.setData(data);
+                chart.notifyDataSetChanged();
+                chart.invalidate();
+
 
 
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(Distribution.this, "Fail to load post", Toast.LENGTH_SHORT).show();
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(BarChartActivity.this, "Fail to load post", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
-
 
     private void initDatabase() {
         mDatabase = FirebaseDatabase.getInstance();
@@ -143,8 +142,5 @@ public class Distribution extends AppCompatActivity{
         };
         mReference.addChildEventListener(mChild);
     }
-
-
-
 
 }

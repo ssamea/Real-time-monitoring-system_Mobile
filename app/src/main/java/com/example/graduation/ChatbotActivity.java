@@ -1,7 +1,10 @@
 package com.example.graduation;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,16 +25,23 @@ import android.widget.Toast;
 import com.google.api.gax.core.FixedCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.dialogflow.v2beta1.AudioEncoding;
+import com.google.cloud.dialogflow.v2beta1.DetectIntentRequest;
 import com.google.cloud.dialogflow.v2beta1.DetectIntentResponse;
+import com.google.cloud.dialogflow.v2beta1.InputAudioConfig;
 import com.google.cloud.dialogflow.v2beta1.QueryInput;
+import com.google.cloud.dialogflow.v2beta1.QueryResult;
 import com.google.cloud.dialogflow.v2beta1.SessionName;
 import com.google.cloud.dialogflow.v2beta1.SessionsClient;
 import com.google.cloud.dialogflow.v2beta1.SessionsSettings;
 import com.google.cloud.dialogflow.v2beta1.TextInput;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.protobuf.ByteString;
 
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import ai.api.AIServiceContext;
@@ -41,7 +51,7 @@ import ai.api.android.AIDataService;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
 
-public class ChatbotActivity extends AppCompatActivity {
+public class ChatbotActivity extends AppCompatActivity{
 
     private static final String TAG = ChatbotActivity.class.getSimpleName();
     private static final int USER = 10001;
@@ -113,7 +123,10 @@ public class ChatbotActivity extends AppCompatActivity {
         });
 
         //  initChatbot();
+        String manual= "                     **사용법** \n ===============================\n | 주문예상시간을 사용하고 싶으시면        | \n | 1번이나 단어를 입력해주세요!               | \n | 현재인원그래프를 알고 싶으시면           | \n | 2번이나 단어를 입력해주세요!               | \n===============================";
+        showTextView(manual,BOT);
         initV2Chatbot();
+
 
     }
 
@@ -131,11 +144,14 @@ public class ChatbotActivity extends AppCompatActivity {
             InputStream stream = getResources().openRawResource(R.raw.test_agent_ecgnqp_35e1fbc02275);
             GoogleCredentials credentials = GoogleCredentials.fromStream(stream);
             String projectId = ((ServiceAccountCredentials)credentials).getProjectId();
+            String audioFilePath;
 
             SessionsSettings.Builder settingsBuilder = SessionsSettings.newBuilder();
             SessionsSettings sessionsSettings = settingsBuilder.setCredentialsProvider(FixedCredentialsProvider.create(credentials)).build();
             sessionsClient = SessionsClient.create(sessionsSettings);
             session = SessionName.of(projectId, uuid);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,7 +171,7 @@ public class ChatbotActivity extends AppCompatActivity {
 
             // Android client
             // aiRequest.setQuery(msg);
-             //RequestTask requestTask = new RequestTask(MainActivity.this, aiDataService, customAIServiceContext);
+            //RequestTask requestTask = new RequestTask(MainActivity.this, aiDataService, customAIServiceContext);
             // requestTask.execute(aiRequest);
 
             // Java V2
@@ -180,12 +196,13 @@ public class ChatbotActivity extends AppCompatActivity {
 
 
     public void callbackV2(DetectIntentResponse response) {
+
         if (response != null) {
             // process aiResponse here
             String botReply = response.getQueryResult().getFulfillmentText();
             Log.d(TAG, "V2 Bot Reply: " + botReply);
+           // showTextView(manual,BOT);
             showTextView(botReply, BOT);
-
             //인텐트에 해당하는 액티비티 띄우기
             if(botReply.contains("대기")==true){
                 Intent intent1;
@@ -193,9 +210,11 @@ public class ChatbotActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
 
+
             if(botReply.contains("식당")==true){
                 Intent intent2;
-                intent2 = new Intent(this, Distribution.class);
+                //intent2 = new Intent(this, Distribution.class);
+                intent2 = new Intent(this, BarChartActivity.class);
                 startActivity(intent2);
 
             }
@@ -230,6 +249,8 @@ public class ChatbotActivity extends AppCompatActivity {
         }
 
         else {
+           // String manual= "대기시간을 사용하고 싶으면 챗봇에게 1번이나 단어를 \n 현장인원분포도를 알고 싶으시면 2번이나 단어를 입력해주세요!!";
+          //  showTextView(manual,BOT);
             Log.d(TAG, "Bot Reply: Null");
             showTextView("There was some communication issue. Please Try again!", BOT);
         }
@@ -268,7 +289,60 @@ public class ChatbotActivity extends AppCompatActivity {
         return (FrameLayout) inflater.inflate(R.layout.bot_msg_layout, null);
     }
 
+    /*
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static QueryResult detectIntentAudio(
+            String projectId,
+            String audioFilePath,
+            String sessionId,
+            String languageCode)
+            throws Exception {
+        // Instantiates a client
+        try (SessionsClient sessionsClient = SessionsClient.create()) {
+            // Set the session name using the sessionId (UUID) and projectID (my-project-id)
+            SessionName session = SessionName.of(projectId, sessionId);
+            System.out.println("Session Path: " + session.toString());
 
+            // Note: hard coding audioEncoding and sampleRateHertz for simplicity.
+            // Audio encoding of the audio content sent in the query request.
+            AudioEncoding audioEncoding = AudioEncoding.AUDIO_ENCODING_LINEAR_16;
+            int sampleRateHertz = 16000;
+
+            // Instructs the speech recognizer how to process the audio content.
+            InputAudioConfig inputAudioConfig = InputAudioConfig.newBuilder()
+                    .setAudioEncoding(audioEncoding) // audioEncoding = AudioEncoding.AUDIO_ENCODING_LINEAR_16
+                    .setLanguageCode(languageCode) // languageCode = "en-US"
+                    .setSampleRateHertz(sampleRateHertz) // sampleRateHertz = 16000
+                    .build();
+
+            // Build the query with the InputAudioConfig
+            QueryInput queryInput = QueryInput.newBuilder().setAudioConfig(inputAudioConfig).build();
+
+            // Read the bytes from the audio file
+            byte[] inputAudio = Files.readAllBytes(Paths.get(audioFilePath));
+
+            // Build the DetectIntentRequest
+            DetectIntentRequest request = DetectIntentRequest.newBuilder()
+                    .setSession(session.toString())
+                    .setQueryInput(queryInput)
+                    .setInputAudio(ByteString.copyFrom(inputAudio))
+                    .build();
+
+            // Performs the detect intent request
+            DetectIntentResponse response = sessionsClient.detectIntent(request);
+
+            // Display the query result
+            QueryResult queryResult = response.getQueryResult();
+            System.out.println("====================");
+            System.out.format("Query Text: '%s'\n", queryResult.getQueryText());
+            System.out.format("Detected Intent: %s (confidence: %f)\n",
+                    queryResult.getIntent().getDisplayName(), queryResult.getIntentDetectionConfidence());
+            System.out.format("Fulfillment Text: '%s'\n", queryResult.getFulfillmentText());
+
+            return queryResult;
+        }
+    }
+     */
 
 
     @Override
