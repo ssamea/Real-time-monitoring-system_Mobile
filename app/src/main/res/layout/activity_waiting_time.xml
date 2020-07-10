@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     tools:context=".waiting_time">
 
     <TextView
@@ -16,11 +18,26 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+    </LinearLayout>
+
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="237dp"
-        android:layout_marginTop="40dp"
+        android:layout_height="185dp"
+        android:layout_marginTop="30dp"
         android:stretchColumns="*">
 
         <TableRow
@@ -57,7 +74,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -67,7 +84,7 @@
             <TextView
                 android:id="@+id/Edong"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -77,12 +94,13 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000">
+            android:background="#000000"
+            android:padding="1dp">
 
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -92,7 +110,7 @@
             <TextView
                 android:id="@+id/tip"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -108,7 +126,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -118,7 +136,7 @@
             <TextView
                 android:id="@+id/Olive"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -133,7 +151,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
@@ -143,17 +161,13 @@
             <TextView
                 android:id="@+id/sanyong"
                 android:layout_width="wrap_content"
-                android:layout_height="54dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="1dp"
                 android:background="#fff0f0ff"
                 android:gravity="center"
                 android:textSize="12sp" />
         </TableRow>
     </TableLayout>
-
-
-
-
 
 
 </LinearLayout>
