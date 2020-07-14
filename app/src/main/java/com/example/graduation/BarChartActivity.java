@@ -3,7 +3,9 @@ package com.example.graduation;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -34,6 +36,12 @@ public class BarChartActivity extends AppCompatActivity {
     private DatabaseReference mReference;
     private ChildEventListener mChild;
     BarChart chart;
+    TextView tv1;
+    TextView tv2;
+    TextView tv3;
+    TextView tv4;
+
+
 
 
     @Override
@@ -42,6 +50,12 @@ public class BarChartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bar_chart);
 
         initDatabase();
+
+        tv1=(TextView)findViewById(R.id.Edong2);
+        tv2=(TextView)findViewById(R.id.tip2);
+        tv3=(TextView)findViewById(R.id.Olive2);
+        tv4=(TextView)findViewById(R.id.sanyong2);
+
         chart = findViewById(R.id.barchart);
 
 
@@ -76,19 +90,38 @@ public class BarChartActivity extends AppCompatActivity {
                     people_Data.add(new BarEntry(2.5f,SensorValue3));
                     people_Data.add(new BarEntry(3.5f,SensorValue4));
 
+
+                    String s_cnt=String.valueOf(cnt).toString();
+                    String s_cnt2=String.valueOf(cnt2).toString();
+                    String s_cnt3=String.valueOf(cnt3).toString();
+                    String s_cnt4=String.valueOf(cnt4).toString();
+
+                  //  String s_cnt2=dataSnapshot.child("JongHap").child("people_number").getValue(String.class);
+                  //  String s_cnt3=dataSnapshot.child("Olive").child("people_number").getValue(String.class);
+                  //  String s_cnt4=dataSnapshot.child("Sanyung").child("people_number").getValue(String.class);
+
+                    tv1.setText(s_cnt);
+                    tv2.setText(s_cnt2);
+                    tv3.setText(s_cnt3);
+                    tv4.setText(s_cnt4);
+
                 }
 
                 Collections.sort(people_Data, new EntryXComparator());
                 BarDataSet bardataset = new BarDataSet(people_Data, "인원 수");
                 BarData data = new BarData(bardataset); // MPAndroidChart v3.X 오류 발생
+                data.setValueTextColor(Color.WHITE);
                 bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
                 //x축 string으로 변환
                 XAxis xAxis = chart.getXAxis();
                 xAxis.setValueFormatter(new MyXAxisValueFormatter(labels)); //MyXAxisValueFormatter 커
                 xAxis.setGranularity(1f);
-                xAxis.setTextSize(13f);
+                xAxis.setTextSize(11f);
                 xAxis.setCenterAxisLabels(true);
+                xAxis.setTextColor(Color.WHITE);
+                xAxis.setGridColor(Color.WHITE); // X축 줄의 컬러 설정
+
                 //xAxis.setLabelRotationAngle(-90);
 
 

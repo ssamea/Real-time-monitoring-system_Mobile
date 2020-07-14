@@ -74,30 +74,11 @@ public class waiting_time extends AppCompatActivity {
                     String time3= dataSnapshot.child("Sanyung").child("Waiting_time").getValue(String.class);
                     String time4= dataSnapshot.child("TIP").child("Waiting_time").getValue(String.class);
 
-                    /*
-                    Float SensorValue = Float.valueOf(time1).floatValue();
-                    Float SensorValue2 = Float.valueOf(time2).floatValue();
-                    Float SensorValue3 = Float.valueOf(time3).floatValue();
-                    Float SensorValue4 = Float.valueOf(time4).floatValue();
-
-
-                    f1[0] =SensorValue;
-                    f2[0] =SensorValue2;
-                    f3[0] =SensorValue3;
-                    f4[0] =SensorValue4;
-
-                     */
 
                     tv1.setText(time1);
                     tv2.setText(time2);
                     tv3.setText(time3);
                     tv4.setText(time4);
-
-                  //  yValues.clear();
-               //     yValues.add(new PieEntry(8f, "종합관"));
-                //    yValues.add(new PieEntry(2f, "Olive"));
-                //    yValues.add(new PieEntry(1f, "산융"));
-                  //  yValues.add(new PieEntry(3f, "TIP"));
 
                 }
 
