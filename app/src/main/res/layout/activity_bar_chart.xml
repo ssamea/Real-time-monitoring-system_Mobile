@@ -1,14 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/color1"
     tools:context=".BarChartActivity">
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barchart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="현재 식당 인원"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="185dp"
+        android:layout_marginTop="30dp"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:padding="1dp"
+            >
+
+
+            <TextView
+                android:layout_width="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:background="#FFFACD"
+                android:gravity="center_horizontal"
+                android:text="식당"
+                android:textSize="12sp"
+                android:padding="1dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:background="#FFFACD"
+                android:gravity="center_horizontal"
+                android:text="현재 인원 수"
+                android:padding="1dp"
+                android:textSize="12sp" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:padding="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:text="종합관"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/Edong2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:padding="1dp">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:text="올리브"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tip2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#fff0f0ff"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#000000"
+            android:padding="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:text="산학융합관"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/Olive2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:background="#000000"
+            android:padding="1dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:text="TIP"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/sanyong2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginRight="1dp"
+                android:background="#f8f8ff"
+                android:gravity="center"
+                android:textSize="12sp" />
+        </TableRow>
+    </TableLayout>
+
+
+</LinearLayout>
