@@ -1,11 +1,19 @@
 package com.example.graduation;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -42,6 +50,7 @@ import com.google.protobuf.ByteString;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import ai.api.AIServiceContext;
@@ -59,6 +68,7 @@ public class ChatbotActivity extends AppCompatActivity{
 
     private String uuid = UUID.randomUUID().toString();
     private LinearLayout chatLayout;
+    private LinearLayout chatLayout2;
     private EditText queryEditText;
 
     // Android client
@@ -77,10 +87,20 @@ public class ChatbotActivity extends AppCompatActivity{
     //firebase auth object
     private FirebaseAuth firebaseAuth;
 
+    //음성 채팅 관련 변수
+    //TextView txt=new findViewById(R.id.chatLayout);
+    Intent intent;
+    SpeechRecognizer stt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatbot_main);
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},5);
+            toast("알라후크바르!!!");
+        }
 
         //buttonLogout = (Button) findViewById(R.id.buttonLogout);
 
@@ -313,7 +333,90 @@ public class ChatbotActivity extends AppCompatActivity{
                 startActivity(new Intent(this,MainActivity.class));
                 Toast.makeText(this, "로그아웃 되었습니다!", Toast.LENGTH_SHORT).show();
                 return true;
+
+            case R.id.speach:
+               // chatLayout2=findViewById(R.id.chatLayout);
+                inputVoice();
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void inputVoice(){
+
+        try {
+            intent= new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE,this.getPackageName());
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"ko-KR");
+
+            stt= SpeechRecognizer.createSpeechRecognizer(this);
+            stt.setRecognitionListener(new RecognitionListener() {
+                @Override
+                public void onReadyForSpeech(Bundle params) {
+                    toast("음성 인식 시작합니다.");
+
+                }
+
+                @Override
+                public void onBeginningOfSpeech() {
+
+                }
+
+                @Override
+                public void onRmsChanged(float rmsdB) {
+
+                }
+
+                @Override
+                public void onBufferReceived(byte[] buffer) {
+
+                }
+
+                @Override
+                public void onEndOfSpeech() {
+                    toast("음성 인식을 종료합니다!");
+
+                }
+
+                @Override
+                public void onError(int error) {
+                    toast("에러 발생! 다시 시도 바랍니다.");
+                    stt.destroy();
+                }
+
+                @Override
+                public void onResults(Bundle results) {
+                    ArrayList<String> res=(ArrayList<String>)results.get(SpeechRecognizer.RESULTS_RECOGNITION);
+                    //String res= (String) results.get(SpeechRecognizer.RESULTS_RECOGNITION);
+                 //   String msg = res.toString();
+
+                    showTextView(res.get(0), USER);
+                    // Java V2
+                    QueryInput queryInput = QueryInput.newBuilder().setText(TextInput.newBuilder().setText(res.get(0)).setLanguageCode("ko-KR")).build();
+                    new RequestJavaV2Task(ChatbotActivity.this, session, sessionsClient, queryInput).execute();
+
+                    // System.out.println(res.get(0));
+
+                    stt.destroy();
+                }
+
+                @Override
+                public void onPartialResults(Bundle partialResults) {
+
+                }
+
+                @Override
+                public void onEvent(int eventType, Bundle params) {
+
+                }
+            });
+            stt.startListening(intent);
+
+        }catch (Exception e){
+            toast(e.toString());
+        }
+    }
+    private void toast(String msg){
+        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
     }
 }
