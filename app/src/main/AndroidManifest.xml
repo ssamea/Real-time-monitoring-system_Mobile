@@ -3,19 +3,25 @@
     package="com.example.graduation">
     <!-- 인터넷 권한 선언 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
+    <!-- 음성인식 권한 선언 -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="graduation"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MapJong"></activity>
+        android:theme="@style/AppTheme"
+        >
+
+        <activity android:name=".BarChartActivity"></activity>
+        <activity android:name=".MapJong" />
         <activity android:name=".MainKpu3" />
         <activity android:name=".MapKpu2" />
-        <activity android:name=".Maunal" />
         <activity android:name=".MapKpu" />
         <activity android:name=".waiting_time" />
         <activity android:name=".Distribution" />
