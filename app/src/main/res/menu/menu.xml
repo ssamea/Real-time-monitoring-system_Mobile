@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
         android:id="@+id/logout"
         android:title="Logout">
     </item>
+
+    <item
+        android:id="@+id/speach"
+        android:icon="@drawable/speaker"
+        android:title="음성 채팅"
+        android:visible="true"
+        app:showAsAction="ifRoom"></item>
 </menu>
