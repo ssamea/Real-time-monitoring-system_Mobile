@@ -82,7 +82,7 @@
                 android:layout_marginRight="1dp"
                 android:background="#f8f8ff"
                 android:gravity="center"
-                android:text="종합관"
+                android:text="TIP"
                 android:textSize="12sp" />
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_marginRight="1dp"
                 android:background="#f8f8ff"
                 android:gravity="center"
-                android:text="올리브"
+                android:text="종합관"
                 android:textSize="12sp" />
 
             <TextView
@@ -134,7 +134,7 @@
                 android:layout_marginRight="1dp"
                 android:background="#f8f8ff"
                 android:gravity="center"
-                android:text="산학융합관"
+                android:text="Olive"
                 android:textSize="12sp" />
 
             <TextView
@@ -159,7 +159,7 @@
                 android:layout_marginRight="1dp"
                 android:background="#f8f8ff"
                 android:gravity="center"
-                android:text="TIP"
+                android:text="산학융합관"
                 android:textSize="12sp" />
 
             <TextView

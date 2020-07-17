@@ -45,7 +45,9 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#000000">
+            android:background="#000000"
+            android:padding="1dp"
+            >
 
 
             <TextView
