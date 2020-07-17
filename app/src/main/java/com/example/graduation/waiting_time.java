@@ -3,6 +3,7 @@ package com.example.graduation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -39,12 +40,22 @@ public class waiting_time extends AppCompatActivity {
     TextView tv3;
     TextView tv4;
     PieChart pieChart;
+    public static Context context_main; // context 변수 선언
+    public int var; // 다른 Activity에서 접근할 변수
+    public  String s_time1;
+    public  String s_time2;
+    public  String s_time3;
+    public  String s_time4;
+
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting_time);
+        context_main = this; // onCreate에서 this 할당
 
         initDatabase();
         tv1=(TextView)findViewById(R.id.Edong);
@@ -68,17 +79,15 @@ public class waiting_time extends AppCompatActivity {
 
 
                 for (DataSnapshot myData : dataSnapshot.getChildren()) { ////values에 데이터를 담는 과정
+                    s_time1= dataSnapshot.child("JongHap").child("Waiting_time").getValue(String.class);
+                    s_time2= dataSnapshot.child("Olive").child("Waiting_time").getValue(String.class);
+                    s_time3= dataSnapshot.child("Sanyung").child("Waiting_time").getValue(String.class);
+                    s_time4= dataSnapshot.child("TIP").child("Waiting_time").getValue(String.class);
 
-                    String time1= dataSnapshot.child("JongHap").child("Waiting_time").getValue(String.class);
-                    String time2= dataSnapshot.child("Olive").child("Waiting_time").getValue(String.class);
-                    String time3= dataSnapshot.child("Sanyung").child("Waiting_time").getValue(String.class);
-                    String time4= dataSnapshot.child("TIP").child("Waiting_time").getValue(String.class);
-
-
-                    tv1.setText(time1);
-                    tv2.setText(time2);
-                    tv3.setText(time3);
-                    tv4.setText(time4);
+                    tv1.setText(s_time1);
+                    tv2.setText(s_time2);
+                    tv3.setText(s_time3);
+                    tv4.setText(s_time4);
 
                 }
 

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -45,6 +46,12 @@ import com.google.cloud.dialogflow.v2beta1.SessionsSettings;
 import com.google.cloud.dialogflow.v2beta1.TextInput;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.protobuf.ByteString;
 
 import java.io.InputStream;
@@ -70,6 +77,9 @@ public class ChatbotActivity extends AppCompatActivity{
     private LinearLayout chatLayout;
     private LinearLayout chatLayout2;
     private EditText queryEditText;
+    private FirebaseDatabase mDatabase;
+    private DatabaseReference mReference;
+    private ChildEventListener mChild;
 
     // Android client
     private AIRequest aiRequest;
@@ -91,6 +101,8 @@ public class ChatbotActivity extends AppCompatActivity{
     //TextView txt=new findViewById(R.id.chatLayout);
     Intent intent;
     SpeechRecognizer stt;
+
+    String msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +194,7 @@ public class ChatbotActivity extends AppCompatActivity{
 
 
     private void sendMessage(View view) {
-        String msg = queryEditText.getText().toString();
+        msg = queryEditText.getText().toString();
         if (msg.trim().isEmpty()) {
             Toast.makeText(ChatbotActivity.this, "Please enter your query!", Toast.LENGTH_LONG).show();
         } else {
@@ -245,11 +257,14 @@ public class ChatbotActivity extends AppCompatActivity{
                 startActivity(intent3);
             }
 
+            /*
             if(botReply.contains("TIP")==true){
                 Intent intent4;
                 intent4 = new Intent(this, MapKpu2.class);
                 startActivity(intent4);
             }
+
+             */
 
 
             if(botReply.contains("산융")==true){
@@ -264,7 +279,73 @@ public class ChatbotActivity extends AppCompatActivity{
                 startActivity(intent6);
             }
 
+            if(botReply.contains("알려드리겠습니다")==true){
 
+                    int time1= Integer.parseInt(((waiting_time)waiting_time.context_main).s_time1);
+
+                    int time2= Integer.parseInt(((waiting_time)waiting_time.context_main).s_time2);;
+                    int time3= Integer.parseInt(((waiting_time)waiting_time.context_main).s_time3);;
+                    int time4= Integer.parseInt(((waiting_time)waiting_time.context_main).s_time4);;
+
+                    String rest1;
+                    String rest2;
+                    String rest3;
+                    String rest4;
+
+                    int max=0;
+                    String res="";
+
+                if(time1>time2){
+                        if(time3>time2){
+                            if(time4>time2){
+                                max=time2;
+                                rest2="올리브";
+
+                                res="가장 빨리 음식을 드실 수 있는 곳은 "+rest2+"로 기다리는 시간은"+max+"분 소요 될 것으로 예상됩니다.";
+                                showTextView(res,BOT);
+                                initV2Chatbot();
+                            }
+                        }
+                    }
+                if(time2>time1){
+                        if(time3>time1){
+                            if(time4>time1){
+                                max=time1;
+                                rest1="종합관";
+
+                                res="가장 빨리 음식을 드실 수 있는 곳은 "+rest1+"로 기다리는 시간은"+max+"분 소요 될 것으로 예상됩니다.";
+                                showTextView(res,BOT);
+                                initV2Chatbot();
+                            }
+                        }
+                    }
+
+                if(time1>time3){
+                        if(time2>time3){
+                            if(time4>time3){
+                                max=time3;
+                                rest3="산융";
+
+                                res="가장 빨리 음식을 드실 수 있는 곳은 "+rest3+"로 기다리는 시간은"+max+"분 소요 될 것으로 예상됩니다.";
+                                showTextView(res,BOT);
+                                initV2Chatbot();
+                            }
+                        }
+                    }
+
+                if(time1>time4) {
+                    if (time2 > time4) {
+                        if (time3 > time4) {
+                            max = time4;
+                            rest4 = "tip";
+
+                            res="가장 빨리 음식을 드실 수 있는 곳은 "+rest4+"로 기다리는 시간은"+max+"분 소요 될 것으로 예상됩니다.";
+                            showTextView(res, BOT);
+                            initV2Chatbot();
+                        }
+                    }
+                }
+            }
 
         }
 
@@ -298,9 +379,8 @@ public class ChatbotActivity extends AppCompatActivity{
         layout.requestFocus();
         queryEditText.requestFocus(); // change focus back to edit text to continue typing
 
-
         // 9 패치 이미지로 채팅 버블을 출력
-        tv.setBackground(this.getResources().getDrawable( (type==BOT ? R.drawable.chatbot_msg : R.drawable.user_msg )));
+        tv.setBackground(this.getResources().getDrawable( (type==BOT ? R.drawable.bot_message : R.drawable.user_message )));
 
 
     }
@@ -335,7 +415,6 @@ public class ChatbotActivity extends AppCompatActivity{
                 return true;
 
             case R.id.speach:
-               // chatLayout2=findViewById(R.id.chatLayout);
                 inputVoice();
 
         }
@@ -391,11 +470,10 @@ public class ChatbotActivity extends AppCompatActivity{
                  //   String msg = res.toString();
 
                     showTextView(res.get(0), USER);
+
                     // Java V2
                     QueryInput queryInput = QueryInput.newBuilder().setText(TextInput.newBuilder().setText(res.get(0)).setLanguageCode("ko-KR")).build();
                     new RequestJavaV2Task(ChatbotActivity.this, session, sessionsClient, queryInput).execute();
-
-                    // System.out.println(res.get(0));
 
                     stt.destroy();
                 }
@@ -416,7 +494,10 @@ public class ChatbotActivity extends AppCompatActivity{
             toast(e.toString());
         }
     }
+
     private void toast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
     }
+
+
 }
