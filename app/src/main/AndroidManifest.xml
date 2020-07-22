@@ -11,8 +11,8 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="graduation"
+        android:icon="@drawable/som9"
+        android:label="kpu 밥묵자"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -37,6 +37,7 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ChatbotActivity" />
         <activity android:name=".FindActivity" />
+
     </application>
 
 </manifest>
