@@ -11,7 +11,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/som9"
+        android:icon="@drawable/kpu"
         android:label="kpu 밥묵자"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
