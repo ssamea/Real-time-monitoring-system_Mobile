@@ -3,6 +3,8 @@ package com.example.graduation;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,10 @@ public class Distribution extends AppCompatActivity{
     private FirebaseDatabase mDatabase;
     private DatabaseReference mReference;
     private ChildEventListener mChild;
+    TextView tv1;
+    TextView tv2;
+    TextView tv3;
+    TextView tv4;
 
 
     LineChart lineChart; //Temp_linechart
@@ -41,6 +47,11 @@ public class Distribution extends AppCompatActivity{
         setContentView(R.layout.activity_distribution);
 
         initDatabase();
+        tv1=(TextView)findViewById(R.id.Edong2);
+        tv2=(TextView)findViewById(R.id.tip2);
+        tv3=(TextView)findViewById(R.id.Olive2);
+        tv4=(TextView)findViewById(R.id.sanyong2);
+
 
         lineChart=(LineChart)findViewById(R.id.mpChart);
         //  tv=(TextView)findViewById(R.id.cntid);
@@ -65,7 +76,7 @@ public class Distribution extends AppCompatActivity{
 
                 for (DataSnapshot myData : dataSnapshot.getChildren()) { ////values에 데이터를 담는 과정
                     //i = i + 1;
-                    Integer cnt= dataSnapshot.child("Tip").child("people_number").getValue(Integer.class);
+                    Integer cnt= dataSnapshot.child("TIP").child("people_number").getValue(Integer.class);
                     Integer cnt2= dataSnapshot.child("JongHap").child("people_number").getValue(Integer.class);
                     Integer cnt3= dataSnapshot.child("Olive").child("people_number").getValue(Integer.class);
                     Integer cnt4= dataSnapshot.child("Sanyung").child("people_number").getValue(Integer.class);
@@ -75,10 +86,21 @@ public class Distribution extends AppCompatActivity{
                     Float SensorValue3 = Float.valueOf(cnt3).floatValue();
                     Float SensorValue4 = Float.valueOf(cnt4).floatValue();
 
+                    String s_cnt=dataSnapshot.child("TIP").child("people_number").getValue(String.class);
+                    String s_cnt2=dataSnapshot.child("JongHap").child("people_number").getValue(String.class);
+                    String s_cnt3=dataSnapshot.child("Olive").child("people_number").getValue(String.class);
+                    String s_cnt4=dataSnapshot.child("Sanyung").child("people_number").getValue(String.class);
+
                     dataVals.add(new Entry(1f,SensorValue));
                     dataVals.add(new Entry(2f,SensorValue2));
                     dataVals.add(new Entry(3f,SensorValue3));
                     dataVals.add(new Entry(4f,SensorValue4));
+
+
+                    tv1.setText(s_cnt);
+                    tv2.setText(s_cnt2);
+                    tv3.setText(s_cnt3);
+                    tv4.setText(s_cnt4);
 
                     // tv.setText("현재 인원:"+cnt);
                 }
@@ -92,6 +114,8 @@ public class Distribution extends AppCompatActivity{
                 //x축 string으로 변환
                 XAxis xAxis = lineChart.getXAxis();
                 xAxis.setValueFormatter(new MyXAxisValueFormatter(labels)); //MyXAxisValueFormatter 커스텀 디자인 클래스 호출
+                xAxis.setGridColor(R.color.color_white); // X축 줄의 컬러 설정
+                xAxis.setTextColor(000000);
 
                 //출력
                 lineChart.setData(data);

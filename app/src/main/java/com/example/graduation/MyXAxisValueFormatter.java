@@ -1,14 +1,12 @@
 package com.example.graduation;
 
-import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import java.util.Collection;
 
 public class MyXAxisValueFormatter  extends ValueFormatter {
     private String[] mValues = new String[] {};
     private int mValueCount = 0;
-
-
 
     //`setValues`를 사용하여 축 레이블을 설정할 경우
 

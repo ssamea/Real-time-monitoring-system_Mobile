@@ -1,6 +1,7 @@
 package com.example.graduation;
 
 public class Client {
+
     private String ID;
     private String PASSWORD;
     private String name;
@@ -8,10 +9,11 @@ public class Client {
     private String EMAIL;
     private String MOBILE;
     private String RESDIENT_NUMBER;
+    private String Sex;
 
 
 
-    public Client(String ID,String PASSWORD,String name,String ADDRESS, String EMAIL, String MOBILE, String RESDIENT_NUMBER){
+    public Client(String ID,String PASSWORD,String name,String ADDRESS, String EMAIL, String MOBILE, String RESDIENT_NUMBER, String Sex){
         this.ID=ID;
         this.PASSWORD=PASSWORD;
         this.name=name;
@@ -19,6 +21,7 @@ public class Client {
         this.EMAIL=EMAIL;
         this.MOBILE=MOBILE;
         this.RESDIENT_NUMBER=RESDIENT_NUMBER;
+        this.Sex=Sex;
     }
 
 
@@ -53,7 +56,13 @@ public class Client {
     public void setRESDIENT_NUMBER(String RESDIENT_NUMBER) {
         this.RESDIENT_NUMBER = RESDIENT_NUMBER;
     }
+    public String getSex() {
+        return Sex;
+    }
 
+    public void setSex(String sex) {
+        Sex = sex;
+    }
 
 
     public String getID() {
