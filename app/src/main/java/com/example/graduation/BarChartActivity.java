@@ -75,7 +75,7 @@ public class BarChartActivity extends AppCompatActivity {
 
                 for (DataSnapshot myData : dataSnapshot.getChildren()) {
 
-                    Integer cnt= dataSnapshot.child("Tip").child("people_number").getValue(Integer.class);
+                    Integer cnt= dataSnapshot.child("TIP").child("people_number").getValue(Integer.class);
                     Integer cnt2= dataSnapshot.child("JongHap").child("people_number").getValue(Integer.class);
                     Integer cnt3= dataSnapshot.child("Olive").child("people_number").getValue(Integer.class);
                     Integer cnt4= dataSnapshot.child("Sanyung").child("people_number").getValue(Integer.class);
