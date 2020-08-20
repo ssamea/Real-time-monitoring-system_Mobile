@@ -155,7 +155,7 @@ public class ChatbotActivity extends AppCompatActivity{
         });
 
         //  initChatbot();
-        String manual= "**사용법** \n주문 예상 시간 확인할 시\n1번이나 해당 단어를 입력해주세요!\n현재 인원 그래프를 알고 싶으시면\n2번이나 단어를 입력해주세요! \n 우측 상단 마이크 클릭하시면 음성인식도 가능해요! \n";
+        String manual= "**사용법** \n주문 예상 시간: 1번, 관련 단어 입력\n현재 인원: 2번, 관련 단어 입력\n 우측 상단 마이크 클릭하시면 음성인식도 가능합니다! \n";
         showTextView(manual,BOT);
         initV2Chatbot();
 
